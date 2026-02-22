@@ -1,0 +1,115 @@
+
+.app-layout {
+  @apply min-h-screen flex;
+}
+
+.sidebar {
+  @apply w-64 bg-[rgb(var(--color-card))] border-r border-[rgb(var(--color-border))] p-6;
+}
+
+.main-content {
+  @apply flex-1 p-8 bg-[rgb(var(--color-bg))];
+}
+
+.topbar {
+  @apply flex items-center justify-between mb-6;
+}
+
+/* Card */
+.card {
+  @apply bg-[rgb(var(--color-card))] border border-[rgb(var(--color-border))] rounded-xl p-6 shadow-sm;
+}
+
+/* Buttons */
+.btn {
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+}
+
+.btn-primary {
+  @apply text-white bg-[rgb(var(--color-primary))] hover:bg-[rgb(var(--color-primary-hover))];
+}
+
+.btn-success {
+  @apply text-white bg-[rgb(var(--color-success))];
+}
+
+.btn-danger {
+  @apply text-white bg-[rgb(var(--color-danger))];
+}
+
+.btn-outline {
+  @apply border border-[rgb(var(--color-border))] text-[rgb(var(--color-text-primary))] hover:bg-[rgb(var(--color-border))];
+}
+
+/* Input */
+.input {
+  @apply w-full px-4 py-2 rounded-lg border border-[rgb(var(--color-border))] 
+  bg-[rgb(var(--color-card))] 
+  text-[rgb(var(--color-text-primary))] 
+  focus:outline-none 
+  focus:ring-2 
+  focus:ring-[rgb(var(--color-primary))];
+}
+
+/* Table */
+.table-container {
+  @apply overflow-hidden rounded-xl border border-[rgb(var(--color-border))];
+}
+
+.table {
+  @apply w-full text-left;
+}
+
+.table th {
+  @apply px-4 py-3 text-sm font-semibold text-[rgb(var(--color-text-secondary))] bg-[rgb(var(--color-card))];
+}
+
+.table td {
+  @apply px-4 py-3 border-t border-[rgb(var(--color-border))];
+}
+
+.table tr:hover {
+  @apply bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.03)];
+}
+
+/* Status Badges */
+.badge {
+  @apply px-3 py-1 text-xs font-medium rounded-full;
+}
+
+.badge-success {
+  @apply bg-[rgb(var(--color-success))] text-white;
+}
+
+.badge-warning {
+  @apply bg-[rgb(var(--color-warning))] text-white;
+}
+
+.badge-danger {
+  @apply bg-[rgb(var(--color-danger))] text-white;
+}
+
+/* KPI Cards */
+.kpi-card {
+  @apply card flex items-center justify-between;
+}
+
+.kpi-title {
+  @apply text-sm text-[rgb(var(--color-text-secondary))];
+}
+
+.kpi-value {
+  @apply text-2xl font-bold;
+}
+
+/* Sidebar Links */
+.sidebar-link {
+  @apply block px-4 py-2 rounded-lg text-[rgb(var(--color-text-secondary))] hover:bg-[rgb(var(--color-primary))] hover:text-white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    @apply w-20 p-4;
+  }
+}
