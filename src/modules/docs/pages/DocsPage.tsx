@@ -96,6 +96,82 @@ const qualityChecklist = [
   'Light/Dark theme accessibility verified across major screens.',
 ]
 
+const folderOwnership = [
+  {
+    area: 'src/modules/<module>/pages',
+    owner: 'Feature Team',
+    responsibility: 'Module screens, feature composition, route-specific orchestration.',
+  },
+  {
+    area: 'src/modules/<module>/services',
+    owner: 'Feature Team',
+    responsibility: 'Module API calls, mapping, business-facing helper functions.',
+  },
+  {
+    area: 'src/components/common',
+    owner: 'Platform UI Team',
+    responsibility: 'Reusable UI building blocks without module-specific logic.',
+  },
+  {
+    area: 'src/app',
+    owner: 'Platform Team',
+    responsibility: 'Routing, providers, shell layout, global app policies.',
+  },
+]
+
+const apiContracts = [
+  {
+    module: 'Students',
+    endpoints: ['POST /students/import', 'GET /students', 'POST /students', 'PATCH /students/:id'],
+    requestModel: 'rollNo, name, branch, semester, section',
+    responseModel: 'id, rollNo, profile, academicMeta, createdAt, updatedAt',
+  },
+  {
+    module: 'Rooms',
+    endpoints: ['GET /rooms', 'POST /rooms', 'PATCH /rooms/:id', 'POST /rooms/validate-capacity'],
+    requestModel: 'roomNo, building, capacity, availabilityStatus',
+    responseModel: 'id, roomNo, capacity, occupancyConfig, status',
+  },
+  {
+    module: 'Exams',
+    endpoints: ['GET /exams', 'POST /exams', 'PATCH /exams/:id', 'POST /exams/:id/map-students'],
+    requestModel: 'examName, date, session, studentCriteria',
+    responseModel: 'id, examCode, schedule, mappedStudents, state',
+  },
+  {
+    module: 'Seating',
+    endpoints: ['POST /seating/generate', 'GET /seating/:examId', 'POST /seating/:examId/export'],
+    requestModel: 'examId, roomFilters, strategy, constraints',
+    responseModel: 'allocationId, roomWiseSummary, unassignedList, generatedAt',
+  },
+]
+
+const engineeringWorkflow = [
+  'Step 1: Freeze module scope and define acceptance criteria.',
+  'Step 2: Create route, page skeleton and module-local types.',
+  'Step 3: Build service layer and API mappers for the module.',
+  'Step 4: Implement forms, tables and action workflows with validation.',
+  'Step 5: Add loading, empty, error and success states.',
+  'Step 6: Integrate audit logging points and role checks.',
+  'Step 7: Complete unit/integration testing and release checklist.',
+]
+
+const testStrategy = [
+  'Unit tests for module helpers, validators and mappers.',
+  'Component tests for critical forms and tables per module.',
+  'Route-level integration tests for end-to-end user workflows.',
+  'Theme verification for light/dark visual consistency.',
+  'Regression checks for seating and invigilation algorithms.',
+]
+
+const releaseReadiness = [
+  'Environment variables documented and validated at startup.',
+  'API timeout, retry and fallback behavior verified.',
+  'Role matrix validated against all module routes and actions.',
+  'Operational reports and exports verified with sample datasets.',
+  'Critical logs and observability events confirmed in monitoring.',
+]
+
 export function DocsPage() {
   return (
     <section className="space-y-6">
@@ -194,9 +270,89 @@ export function DocsPage() {
       </article>
 
       <article className="card">
+        <h3 className="mb-3 text-lg font-semibold">Folder Ownership and Responsibilities</h3>
+        <div className="table-container">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Area</th>
+                <th>Owner</th>
+                <th>Responsibility</th>
+              </tr>
+            </thead>
+            <tbody>
+              {folderOwnership.map((item) => (
+                <tr key={item.area}>
+                  <td>{item.area}</td>
+                  <td>{item.owner}</td>
+                  <td>{item.responsibility}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <article className="card">
+        <h3 className="mb-3 text-lg font-semibold">API Contract Blueprint</h3>
+        <div className="space-y-4">
+          {apiContracts.map((contract) => (
+            <section key={contract.module} className="rounded-xl border border-[rgb(var(--color-border))] p-4">
+              <h4 className="text-base font-semibold">{contract.module}</h4>
+              <div className="mt-3 grid gap-4 md:grid-cols-3">
+                <div>
+                  <p className="mb-2 text-sm font-medium">Suggested Endpoints</p>
+                  <ul className="space-y-1 text-sm text-[rgb(var(--color-text-secondary))]">
+                    {contract.endpoints.map((endpoint) => (
+                      <li key={endpoint}>• {endpoint}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <p className="mb-2 text-sm font-medium">Request Model</p>
+                  <p className="text-sm text-[rgb(var(--color-text-secondary))]">{contract.requestModel}</p>
+                </div>
+                <div>
+                  <p className="mb-2 text-sm font-medium">Response Model</p>
+                  <p className="text-sm text-[rgb(var(--color-text-secondary))]">{contract.responseModel}</p>
+                </div>
+              </div>
+            </section>
+          ))}
+        </div>
+      </article>
+
+      <article className="card">
+        <h3 className="mb-3 text-lg font-semibold">Engineering Workflow</h3>
+        <ul className="space-y-2 text-[rgb(var(--color-text-secondary))]">
+          {engineeringWorkflow.map((item) => (
+            <li key={item}>• {item}</li>
+          ))}
+        </ul>
+      </article>
+
+      <article className="card">
+        <h3 className="mb-3 text-lg font-semibold">Testing Strategy</h3>
+        <ul className="space-y-2 text-[rgb(var(--color-text-secondary))]">
+          {testStrategy.map((item) => (
+            <li key={item}>• {item}</li>
+          ))}
+        </ul>
+      </article>
+
+      <article className="card">
         <h3 className="mb-3 text-lg font-semibold">Development Requirements Checklist</h3>
         <ul className="space-y-2 text-[rgb(var(--color-text-secondary))]">
           {qualityChecklist.map((item) => (
+            <li key={item}>• {item}</li>
+          ))}
+        </ul>
+      </article>
+
+      <article className="card">
+        <h3 className="mb-3 text-lg font-semibold">Release Readiness Checklist</h3>
+        <ul className="space-y-2 text-[rgb(var(--color-text-secondary))]">
+          {releaseReadiness.map((item) => (
             <li key={item}>• {item}</li>
           ))}
         </ul>
