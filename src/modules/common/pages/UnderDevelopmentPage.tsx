@@ -19,26 +19,29 @@ export function UnderDevelopmentPage({ moduleName, description }: UnderDevelopme
   ]
 
   return (
-    <section className="under-dev-wrap">
-      <article className="card under-dev-card">
-        <span className="under-dev-pill">Under Development</span>
-        <h2 className="under-dev-title">{moduleName} Module</h2>
-        <p className="under-dev-text">
+    <section className="grid min-h-[58vh] place-items-center">
+      <article className="w-full max-w-7xl rounded-xl border border-[rgb(var(--color-border))] bg-[rgb(var(--color-card))] p-6 shadow-sm">
+        <span className="inline-flex items-center rounded-full border border-[rgba(var(--color-warning),0.35)] bg-[rgba(var(--color-warning),0.16)] px-3 py-1 text-xs font-semibold text-[rgb(var(--color-text-primary))]">
+          Under Development
+        </span>
+        <h2 className="mt-4 text-2xl font-bold">{moduleName} Module</h2>
+        <p className="mt-2 text-[rgb(var(--color-text-secondary))]">
           {description} This section is currently being implemented with complete module isolation,
           production-grade validation and API integrations.
         </p>
-        <div className="under-dev-grid">
+
+        <div className="mt-5 grid gap-4 md:grid-cols-2">
           <div>
-            <p className="under-dev-subtitle">Planned Scope</p>
-            <ul className="under-dev-list">
+            <p className="mb-2 text-sm font-semibold">Planned Scope</p>
+            <ul className="grid gap-1 pl-4 text-sm text-[rgb(var(--color-text-secondary))]">
               <li>Module-specific components and services</li>
               <li>Strict route-level ownership</li>
               <li>Typed request-response contracts</li>
             </ul>
           </div>
           <div>
-            <p className="under-dev-subtitle">Upcoming Deliverables</p>
-            <ul className="under-dev-list">
+            <p className="mb-2 text-sm font-semibold">Upcoming Deliverables</p>
+            <ul className="grid gap-1 pl-4 text-sm text-[rgb(var(--color-text-secondary))]">
               <li>CRUD and workflow integrations</li>
               <li>Module test coverage and edge-case handling</li>
               <li>Export/report and operational actions</li>
@@ -46,28 +49,28 @@ export function UnderDevelopmentPage({ moduleName, description }: UnderDevelopme
           </div>
         </div>
 
-        <div className="under-dev-grid under-dev-grid-3">
-          <div className="under-dev-panel">
-            <p className="under-dev-subtitle">Delivery Milestones</p>
-            <ul className="under-dev-list">
+        <div className="mt-5 grid gap-4 md:grid-cols-3">
+          <div className="rounded-xl border border-[rgb(var(--color-border))] bg-[rgba(var(--color-card),0.6)] p-4">
+            <p className="mb-2 text-sm font-semibold">Delivery Milestones</p>
+            <ul className="grid gap-1 pl-4 text-sm text-[rgb(var(--color-text-secondary))]">
               {milestones.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
           </div>
 
-          <div className="under-dev-panel">
-            <p className="under-dev-subtitle">Module Dependencies</p>
-            <ul className="under-dev-list">
+          <div className="rounded-xl border border-[rgb(var(--color-border))] bg-[rgba(var(--color-card),0.6)] p-4">
+            <p className="mb-2 text-sm font-semibold">Module Dependencies</p>
+            <ul className="grid gap-1 pl-4 text-sm text-[rgb(var(--color-text-secondary))]">
               {moduleDependencies.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
           </div>
 
-          <div className="under-dev-panel">
-            <p className="under-dev-subtitle">Readiness Checklist</p>
-            <ul className="under-dev-list">
+          <div className="rounded-xl border border-[rgb(var(--color-border))] bg-[rgba(var(--color-card),0.6)] p-4">
+            <p className="mb-2 text-sm font-semibold">Readiness Checklist</p>
+            <ul className="grid gap-1 pl-4 text-sm text-[rgb(var(--color-text-secondary))]">
               <li>Route and ownership boundary defined</li>
               <li>Input validation matrix complete</li>
               <li>API contracts reviewed and typed</li>
