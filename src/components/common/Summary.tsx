@@ -18,14 +18,15 @@ function Summary({
         padding: "15px",
         border: "1px solid black",
         width: "250px",
+        color: "#000",
       }}
     >
-      <h3>Seating Summary</h3>
+      <h3 style={{ color: "#000" }}>Seating Summary</h3>
 
-      <p>Total Students: {totalStudents}</p>
-      <p>Total Seats: {totalSeats}</p>
-      <p>Occupied Seats: {occupiedSeats}</p>
-      <p>Empty Seats: {emptySeats}</p>
+      <p style={{ color: "#000" }}>Total Students: {totalStudents}</p>
+      <p style={{ color: "#000" }}>Total Seats: {totalSeats}</p>
+      <p style={{ color: "#000" }}>Occupied Seats: {occupiedSeats}</p>
+      <p style={{ color: "#000" }}>Empty Seats: {emptySeats}</p>
     </div>
   );
 }

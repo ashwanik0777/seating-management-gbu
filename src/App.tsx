@@ -3,8 +3,6 @@ import { useState, useRef } from "react";
 import Button from "./components/common/Button";
 import Dropdown from "./components/common/Dropdown";
 import Toggle from "./components/common/Toggle";
-import Indicator from "./components/common/Indicator";
-import SeatingGrid from "./components/common/SeatingGrid";
 import Summary from "./components/common/Summary";
 
 // ── Types ──────────────────────────────────────────────────────────
@@ -267,84 +265,156 @@ function CsvUploadPrompt({ onUpload }: { onUpload: (data: CsvData) => void }) {
 }
 
 // ── Styles ─────────────────────────────────────────────────────────
+const lightTheme = `
+  --bg-shell: #f4f4f6;
+  --bg-header: #ffffff;
+  --bg-sidebar: #f9f9fb;
+  --bg-center: #ffffff;
+  --border: #e2e2e8;
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b6e7a;
+  --text-muted: #a0a3ae;
+  --divider: #e2e2e8;
+  --upload-btn-bg: #f0f0f3;
+  --upload-btn-border: #d0d0d8;
+  --upload-btn-color: #555;
+  --section-label: #9a9da8;
+  --hint-color: #b0b3be;
+`;
+
+const darkTheme = `
+  --bg-shell: #0e0f11;
+  --bg-header: #0e0f11;
+  --bg-sidebar: #0c0d0f;
+  --bg-center: #ffffff;
+  --border: #232529;
+  --text-primary: #f0ede8;
+  --text-secondary: #9a9da8;
+  --text-muted: #4a4d56;
+  --divider: #232529;
+  --upload-btn-bg: #1e2025;
+  --upload-btn-border: #333;
+  --upload-btn-color: #aaa;
+  --section-label: #4a4d56;
+  --hint-color: #3a3d46;
+`;
+
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    background: #0e0f11;
-    color: #e8e6e1;
+    background: var(--bg-shell);
+    color: var(--text-primary);
     font-family: 'DM Mono', monospace;
     min-height: 100vh;
+    transition: background 0.2s, color 0.2s;
   }
   .app-shell {
     min-height: 100vh;
     display: grid;
     grid-template-rows: auto 1fr;
-    background: #0e0f11;
+    background: var(--bg-shell);
+    transition: background 0.2s;
   }
   .header {
-    border-bottom: 1px solid #232529;
+    border-bottom: 1px solid var(--border);
     padding: 18px 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #0e0f11;
+    background: var(--bg-header);
+    transition: background 0.2s, border-color 0.2s;
   }
   .header-brand {
     font-family: 'Syne', sans-serif;
     font-size: 18px;
     font-weight: 800;
     letter-spacing: -0.02em;
-    color: #f0ede8;
+    color: var(--text-primary);
+    transition: color 0.2s;
   }
   .header-brand span { color: #f5a623; }
   .header-meta {
     font-size: 11px;
-    color: #4a4d56;
+    color: var(--text-muted);
     letter-spacing: 0.08em;
     text-transform: uppercase;
+    transition: color 0.2s;
   }
   .header-upload-btn {
     font-size: 11px;
     font-family: 'DM Mono', monospace;
     padding: 6px 14px;
-    background: #1e2025;
-    border: 1px solid #333;
-    color: #aaa;
+    background: var(--upload-btn-bg);
+    border: 1px solid var(--upload-btn-border);
+    color: var(--upload-btn-color);
     border-radius: 6px;
     cursor: pointer;
-    transition: border-color 0.15s, color 0.15s;
+    transition: border-color 0.15s, color 0.15s, background 0.2s;
   }
   .header-upload-btn:hover { border-color: #f5a623; color: #f5a623; }
 
+  /* ── Dark/Light toggle ── */
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
+    background: var(--upload-btn-bg);
+    border: 1px solid var(--upload-btn-border);
+    border-radius: 20px;
+    padding: 4px 10px 4px 6px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .theme-toggle:hover { border-color: #f5a623; }
+  .theme-toggle-icon {
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+  }
+  .theme-toggle:hover .theme-toggle-icon { transform: rotate(20deg); }
+  .theme-toggle-label {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+
   .main-layout {
     display: grid;
-    grid-template-columns: 260px 1fr 220px;
+    grid-template-columns: 260px 1fr;
     gap: 0;
     height: calc(100vh - 61px);
   }
   .sidebar {
-    border-right: 1px solid #232529;
+    border-right: 1px solid var(--border);
     padding: 28px 24px;
     display: flex;
     flex-direction: column;
     gap: 32px;
     overflow-y: auto;
-    background: #0c0d0f;
+    background: var(--bg-sidebar);
+    transition: background 0.2s, border-color 0.2s;
   }
   .sidebar-section-label {
     font-size: 10px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #4a4d56;
+    color: var(--section-label);
     margin-bottom: 12px;
+    transition: color 0.2s;
   }
   .sidebar-section { display: flex; flex-direction: column; gap: 10px; }
   .no-data-hint {
     font-size: 11px;
-    color: #3a3d46;
+    color: var(--hint-color);
     font-style: italic;
     line-height: 1.6;
   }
@@ -354,8 +424,9 @@ const styles = `
     align-items: center;
     padding: 32px 36px;
     gap: 20px;
-    background: #ffffff;
+    background: var(--bg-center);
     overflow-y: auto;
+    transition: background 0.2s;
   }
   .center-title {
     font-family: 'Syne', sans-serif;
@@ -363,7 +434,7 @@ const styles = `
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #9a9da8;
+    color: var(--section-label);
     align-self: flex-start;
   }
   .seating-wrapper {
@@ -373,72 +444,15 @@ const styles = `
     align-items: center;
     gap: 8px;
   }
-  .view-toggle {
-    display: flex;
-    border: 1px solid #d0d0d0;
-    border-radius: 6px;
-    overflow: hidden;
-  }
-  .view-toggle button {
-    padding: 6px 14px;
-    font-size: 11px;
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 0.06em;
-    border: none;
-    cursor: pointer;
-    background: #f5f5f5;
-    color: #666;
-    transition: background 0.15s, color 0.15s;
-  }
-  .view-toggle button.active { background: #0e0f11; color: #fff; }
-  .right-panel {
-    border-left: 1px solid #232529;
-    padding: 28px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    background: #0c0d0f;
-    overflow-y: auto;
-  }
-  .right-panel-label {
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #4a4d56;
-    margin-bottom: 4px;
-  }
-  .indicators-stack { display: flex; flex-direction: column; gap: 12px; }
-  .divider { height: 1px; background: #232529; margin: 4px 0; }
-  .reset-wrap { margin-top: auto; }
+  .divider { height: 1px; background: var(--divider); margin: 4px 0; transition: background 0.2s; }
 `;
 
-// ── generateSeats for simple grid view ────────────────────────────
-function generateSeats(students: string[], alternate: boolean) {
-  const grid: (string | null)[][] = [];
-  let index = 0;
-  const slots = [...students.slice(0, 9)];
-  while (slots.length < 9) slots.push("");
-
-  for (let i = 0; i < 3; i++) {
-    const row: (string | null)[] = [];
-    for (let j = 0; j < 3; j++) {
-      if (alternate && (i + j) % 2 === 1) {
-        row.push(null);
-      } else {
-        row.push(slots[index] || null);
-        index++;
-      }
-    }
-    grid.push(row);
-  }
-  return grid;
-}
 
 // ── App ────────────────────────────────────────────────────────────
 function App() {
   const [csvData, setCsvData] = useState<CsvData | null>(null);
   const [alternate, setAlternate] = useState(false);
-  const [view, setView] = useState<"grid" | "plan">("grid");
+  const [dark, setDark] = useState(false);
   const [selectedExam, setSelectedExam] = useState("");
   const [selectedRoom, setSelectedRoom] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -476,17 +490,15 @@ function App() {
     ? (csvData[selectedExam]?.[selectedRoom] ?? [])
     : [];
 
-  const seats = generateSeats(students, alternate);
-  const totalSeats = seats.flat().length;
-  const occupiedSeats = seats.flat().filter((s) => s !== null).length;
-  const emptySeats = seats.flat().filter((s) => s === null).length;
   const totalCapacity = ROOM_SECTIONS.reduce((a, s) => a + s.totalCols * s.rows, 0);
+  const emptySeats = totalCapacity - students.length;
 
-  const handleReset = () => { setAlternate(false); setView("grid"); };
+  const handleReset = () => { setAlternate(false); };
 
   return (
     <>
       <style>{styles}</style>
+      <style>{`:root { ${dark ? darkTheme : lightTheme} }`}</style>
       <input ref={fileInputRef} type="file" accept=".csv" style={{ display: "none" }} onChange={handleFileChange} />
 
       <div className="app-shell">
@@ -499,6 +511,30 @@ function App() {
               </button>
             )}
             <div className="header-meta">Allocation Dashboard</div>
+            <div className="theme-toggle" onClick={() => setDark(!dark)}>
+              <span className="theme-toggle-icon">
+                {dark ? (
+                  // Moon icon
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" fill="#f5a623" stroke="#f5a623" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                ) : (
+                  // Sun icon
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="5" stroke="#f5a623" strokeWidth="1.8"/>
+                    <line x1="12" y1="2" x2="12" y2="4" stroke="#f5a623" strokeWidth="1.8" strokeLinecap="round"/>
+                    <line x1="12" y1="20" x2="12" y2="22" stroke="#f5a623" strokeWidth="1.8" strokeLinecap="round"/>
+                    <line x1="2" y1="12" x2="4" y2="12" stroke="#f5a623" strokeWidth="1.8" strokeLinecap="round"/>
+                    <line x1="20" y1="12" x2="22" y2="12" stroke="#f5a623" strokeWidth="1.8" strokeLinecap="round"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="#f5a623" strokeWidth="1.8" strokeLinecap="round"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="#f5a623" strokeWidth="1.8" strokeLinecap="round"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="#f5a623" strokeWidth="1.8" strokeLinecap="round"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="#f5a623" strokeWidth="1.8" strokeLinecap="round"/>
+                  </svg>
+                )}
+              </span>
+              <span className="theme-toggle-label">{dark ? "Dark" : "Light"}</span>
+            </div>
           </div>
         </header>
 
@@ -535,6 +571,12 @@ function App() {
                 onToggle={() => setAlternate(!alternate)}
               />
             </div>
+
+            <div className="divider" />
+
+            <div style={{ marginTop: "auto" }}>
+              <Button text="Reset Allocation" onClick={handleReset} />
+            </div>
           </aside>
 
           {/* Center */}
@@ -543,56 +585,23 @@ function App() {
               <CsvUploadPrompt onUpload={handleCsvUpload} />
             ) : (
               <>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-                  <div className="center-title">
-                    {view === "grid" ? "Seating Layout" : "Seating Plan Preview"}
-                  </div>
-                  <div className="view-toggle">
-                    <button className={view === "grid" ? "active" : ""} onClick={() => setView("grid")}>Grid</button>
-                    <button className={view === "plan" ? "active" : ""} onClick={() => setView("plan")}>Plan Preview</button>
-                  </div>
-                </div>
-
-                {view === "grid" ? (
-                  <>
-                    <div className="seating-wrapper">
-                      <SeatingGrid seats={seats} />
-                    </div>
-                    <Summary
-                      totalStudents={students.length}
-                      totalSeats={totalSeats}
-                      occupiedSeats={occupiedSeats}
-                      emptySeats={emptySeats}
-                    />
-                  </>
-                ) : (
-                  <SeatingPlanPreview
-                    exam={selectedExam}
-                    room={selectedRoom}
-                    students={students}
-                    alternate={alternate}
-                  />
-                )}
+                <div className="center-title">Seating Plan</div>
+                <SeatingPlanPreview
+                  exam={selectedExam}
+                  room={selectedRoom}
+                  students={students}
+                  alternate={alternate}
+                />
+                <Summary
+                  totalStudents={students.length}
+                  totalSeats={totalCapacity}
+                  occupiedSeats={students.length}
+                  emptySeats={emptySeats}
+                />
               </>
             )}
           </main>
 
-          {/* Right panel */}
-          <aside className="right-panel">
-            <div>
-              <div className="right-panel-label">Overview</div>
-              <div className="indicators-stack">
-                <Indicator label="Students" value={students.length} />
-                <Indicator label="Capacity" value={totalCapacity} />
-              </div>
-            </div>
-
-            <div className="divider" />
-
-            <div className="reset-wrap">
-              <Button text="Reset Allocation" onClick={handleReset} />
-            </div>
-          </aside>
         </div>
       </div>
     </>
