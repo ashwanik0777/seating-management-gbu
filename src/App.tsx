@@ -569,8 +569,7 @@ function App() {
         <header className="header">
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <img
-              src="https://nosplan.in/wp-content/uploads/2022/06/87202-746-7461236_gautam-buddha-university-logo-png-transparent-png.png"
-              alt="Gautam Buddha University"
+              src="/logo.png"
               style={{ height: 36, width: "auto", objectFit: "contain" }}
             />
             <div className="header-brand">Exam<span>Seat</span></div>
