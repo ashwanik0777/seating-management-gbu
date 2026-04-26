@@ -1,0 +1,258 @@
+/* ── Theme variables ───────────────────────────────────────────────── */
+:root {
+  --bg-shell: #f4f4f6;
+  --bg-header: #ffffff;
+  --bg-sidebar: #f9f9fb;
+  --bg-center: #f4f4f6;
+  --border: #e2e2e8;
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b6e7a;
+  --text-muted: #a0a3ae;
+  --divider: #e2e2e8;
+  --upload-btn-bg: #f0f0f3;
+  --upload-btn-border: #d0d0d8;
+  --upload-btn-color: #555;
+  --section-label: #9a9da8;
+  --hint-color: #b0b3be;
+}
+
+/* Dark theme — applied to .app-shell and also :root so fixed elements inherit */
+.dark, :root:has(.dark) {
+  --bg-shell: #0e0f11;
+  --bg-header: #0e0f11;
+  --bg-sidebar: #0c0d0f;
+  --bg-center: #0e0f11;
+  --border: #232529;
+  --text-primary: #f0ede8;
+  --text-secondary: #c0bdb8;
+  --text-muted: #9a9da8;
+  --divider: #232529;
+  --upload-btn-bg: #1e2025;
+  --upload-btn-border: #444;
+  --upload-btn-color: #c0bdb8;
+  --section-label: #8a8d98;
+  --hint-color: #5a5d68;
+}
+
+/* ── App styles ─────────────────────────────────────────────────────── */
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-shell);
+    color: var(--text-primary);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    transition: background 0.2s, color 0.2s;
+  }
+  .app-shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    background: var(--bg-shell);
+    transition: background 0.2s;
+  }
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-header);
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .header-brand {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    transition: color 0.2s;
+  }
+  .header-brand span { color: #f5a623; }
+  .header-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .header-upload-btn {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    padding: 6px 14px;
+    background: var(--upload-btn-bg);
+    border: 1px solid var(--upload-btn-border);
+    color: var(--upload-btn-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.2s;
+  }
+  .header-upload-btn:hover { border-color: #f5a623; color: #f5a623; }
+
+  /* ── Dark/Light toggle ── */
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
+    background: var(--upload-btn-bg);
+    border: 1px solid var(--upload-btn-border);
+    border-radius: 20px;
+    padding: 4px 10px 4px 6px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .theme-toggle:hover { border-color: #f5a623; }
+  .theme-toggle-icon {
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+  }
+  .theme-toggle:hover .theme-toggle-icon { transform: rotate(20deg); }
+  .theme-toggle-label {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+
+  .main-layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-width, 260px) 1fr;
+    gap: 0;
+    height: calc(100vh - 61px);
+    transition: grid-template-columns 0.25s ease;
+  }
+  .main-layout.collapsed {
+    --sidebar-width: 0px;
+    grid-template-columns: 0px 1fr;
+  }
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: var(--bg-sidebar);
+    transition: background 0.2s, border-color 0.2s, width 0.25s ease, padding 0.25s ease;
+    width: 260px;
+    min-width: 0;
+    position: relative;
+  }
+  .sidebar.collapsed {
+    width: 0;
+    padding: 0;
+    border-right: none;
+    overflow: hidden;
+  }
+  /* Collapse toggle button */
+  .sidebar-toggle {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 260px;
+    z-index: 100;
+    width: 18px;
+    height: 40px;
+    background: var(--bg-sidebar);
+    border: 1px solid var(--border);
+    border-left: none;
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: left 0.25s ease, background 0.2s;
+    color: var(--text-muted);
+    font-size: 10px;
+  }
+  .sidebar-toggle:hover { background: var(--upload-btn-bg); color: #f5a623; }
+  .sidebar-toggle.collapsed { left: 0; }
+  /* Export PDF button */
+  .export-btn {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    padding: 6px 14px;
+    background: #f5a623;
+    border: 1px solid #d4891c;
+    color: #000;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .export-btn:hover { background: #e09520; transform: translateY(-1px); }
+  .export-btn:active { transform: translateY(0); }
+  /* Print styles — hide everything except the seating plan */
+  @media print {
+    .header, .sidebar, .sidebar-toggle, .center-title, .no-print { display: none !important; }
+    .app-shell { display: block; }
+    .main-layout { display: block; }
+    .center-content { padding: 0; overflow: visible; }
+    body { background: #fff !important; }
+  }
+  .sidebar-section-label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--section-label);
+    margin-bottom: 12px;
+    transition: color 0.2s;
+  }
+  .sidebar-section { display: flex; flex-direction: column; gap: 10px; }
+  .sidebar label, .sidebar select, .sidebar span {
+    color: var(--text-primary);
+    transition: color 0.2s;
+  }
+  .sidebar select {
+    background: var(--upload-btn-bg);
+    border: 1px solid var(--upload-btn-border);
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+  .no-data-hint {
+    font-size: 11px;
+    color: var(--hint-color);
+    font-style: italic;
+    line-height: 1.6;
+  }
+  .center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 36px;
+    gap: 20px;
+    background: var(--bg-center);
+    overflow-y: auto;
+    transition: background 0.2s;
+  }
+  .center-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--section-label);
+    align-self: flex-start;
+  }
+  .seating-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .divider { height: 1px; background: var(--divider); margin: 4px 0; transition: background 0.2s; }
