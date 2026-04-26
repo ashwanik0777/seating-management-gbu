@@ -52,10 +52,6 @@ type CsvData = {
   };
 };
 
-
-// ── Room layout definitions ────────────────────────────────────────
-type SectionDef = { desks: string[]; colsPerDesk: number; totalCols: number; rows: number };
-
 // Default: 3 sections — [2 desks, 3 desks, 2 desks], 5 rows each = 70 seats
 const LAYOUT_DEFAULT: SectionDef[] = [
   { desks: ["DESK-1", "DESK-2"],           colsPerDesk: 2, totalCols: 4, rows: 5 },
@@ -68,6 +64,10 @@ const LAYOUT_IL101: SectionDef[] = [
   { desks: ["DESK-1", "DESK-2", "DESK-3"], colsPerDesk: 2, totalCols: 6, rows: 6 },
   { desks: ["DESK-1", "DESK-2", "DESK-3"], colsPerDesk: 2, totalCols: 6, rows: 6 },
 ];
+
+// ── Room layout definitions ────────────────────────────────────────
+type SectionDef = { desks: string[]; colsPerDesk: number; totalCols: number; rows: number };
+
 
 // IT-201: 1 section — 5 plain columns, 4 rows = 20 seats (no desk sub-headers)
 const LAYOUT_IT201: SectionDef[] = [
@@ -83,13 +83,16 @@ const ROOM_LAYOUT_MAP: Record<string, SectionDef[]> = {
   "IL-104": LAYOUT_DEFAULT,
 };
 
-function getLayoutForRoom(room: string): SectionDef[] {
-  return ROOM_LAYOUT_MAP[room] ?? LAYOUT_DEFAULT;
-}
 
 function getTotalCapacity(room: string): number {
   return getLayoutForRoom(room).reduce((a, s) => a + s.totalCols * s.rows, 0);
 }
+
+function getLayoutForRoom(room: string): SectionDef[] {
+  return ROOM_LAYOUT_MAP[room] ?? LAYOUT_DEFAULT;
+}
+
+
 
 // Fill students column-by-column per desk across all sections.
 // Each desk has 2 sub-columns: left col fills top-to-bottom first, then right col.
